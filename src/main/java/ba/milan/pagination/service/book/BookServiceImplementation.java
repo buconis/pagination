@@ -18,8 +18,9 @@ import java.util.List;
  */
 @Component("bookService")
 public class BookServiceImplementation implements BookService {
-    public static final String ASC = "asc";
-    public static final String NATIVE = "native";
+    private static final String ASC = "asc";
+    private static final String NATIVE = "native";
+
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final GenreService genreService;
@@ -35,28 +36,28 @@ public class BookServiceImplementation implements BookService {
 
 
     @Override
-    public Page<Book> getAllPaginatedBooks(Pageable pageable) {
+    public Page<Book> getAllPaginatedBooks(Pageable pageable) throws Exception {
         return bookRepository.findAll(pageable);
     }
 
     @Override
     public Page<Book> searchBooksWithPagination(Integer page, Integer length, String name, List<Integer> genres, List<Integer> periods,
-                                                List<Integer> authors, String sort, String sortDirection, String queryType) {
+                                                List<Integer> authors, String sort, String sortDirection, String queryType) throws Exception{
 
         switch (queryType){
             case NATIVE:
-                bookRepository.getNativePaginatedListOfBooks(handleAuthors(authors), handlePeriods(periods), handleGenres(genres), name,
+               return bookRepository.getNativePaginatedListOfBooks(handleAuthors(authors), handlePeriods(periods), handleGenres(genres), name,
                         createPageRequest(sort, sortDirection, length, page));
-                break;
             default:
                 return bookRepository.getPaginatedListOfBooks(handleAuthors(authors), handlePeriods(periods), handleGenres(genres), name,
                         createPageRequest(sort, sortDirection, length, page));
         }
 
+
     }
 
     private Pageable createPageRequest(String sort, String sortDirection, Integer length, Integer pageNumber) {
-        if (length != null && length.equals(-1)) {
+        if (length == null || length.equals(-1)) {
             length = Integer.MAX_VALUE;
             pageNumber = 0;
         }

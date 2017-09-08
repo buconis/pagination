@@ -22,8 +22,12 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
                                        @Param("genres") List<Integer> genres, @Param("name") String name, Pageable pageable);
 
 
-    @Query(value = "SELECT b FROM Book b LEFT JOIN b.author a LEFT JOIN b.genre g LEFT JOIN b.period p " +
-            "WHERE b.name LIKE concat('%',:name,'%') AND a.id IN(:authors) AND p.id IN(:periods) AND g.id IN(:genres)",
+    @Query(value = "SELECT * FROM Book b LEFT JOIN author a on a.id=b.author_id " +
+            "LEFT JOIN genre g on g.id=b.genre_id LEFT JOIN period p on p.id=b.period_id " +
+            "WHERE b.name LIKE concat('%',:name,'%') AND a.id IN(:authors) AND p.id IN(:periods) AND g.id IN(:genres) \n#pageable\n",
+            countQuery = "SELECT count(b.id) FROM Book b LEFT JOIN author a on a.id=b.author_id " +
+                    "LEFT JOIN genre g on g.id=b.genre_id LEFT JOIN period p on p.id=b.period_id " +
+                    "WHERE b.name LIKE concat('%',:name,'%') AND a.id IN(:authors) AND p.id IN(:periods) AND g.id IN(:genres) \n#pageable\n",
             nativeQuery = true)
     Page<Book> getNativePaginatedListOfBooks(@Param("authors") List<Integer> authors, @Param("periods") List<Integer> periods,
                                        @Param("genres") List<Integer> genres, @Param("name") String name, Pageable pageable);
