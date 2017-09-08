@@ -1,13 +1,37 @@
 package ba.milan.pagination.model;
 
+import javax.persistence.*;
+
 /**
  * Created by milanjankovic on 18/08/17.
  */
+@Entity
 public class Book {
+    @Id
+    @GeneratedValue
+    private Integer id;
+
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
     private Author author;
+
+    @ManyToOne
+    @JoinColumn(name = "period_id")
     private Period period;
+
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
     private Genre genre;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
