@@ -42,11 +42,11 @@ public class BookServiceImplementation implements BookService {
 
     @Override
     public Page<Book> searchBooksWithPagination(Integer page, Integer length, String name, List<Integer> genres, List<Integer> periods,
-                                                List<Integer> authors, String sort, String sortDirection, String queryType) throws Exception{
+                                                List<Integer> authors, String sort, String sortDirection, String queryType) throws Exception {
 
-        switch (queryType){
+        switch (queryType) {
             case NATIVE:
-               return bookRepository.getNativePaginatedListOfBooks(handleAuthors(authors), handlePeriods(periods), handleGenres(genres), name,
+                return bookRepository.getNativePaginatedListOfBooks(handleAuthors(authors), handlePeriods(periods), handleGenres(genres), name,
                         createPageRequest(sort, sortDirection, length, page));
             default:
                 return bookRepository.getPaginatedListOfBooks(handleAuthors(authors), handlePeriods(periods), handleGenres(genres), name,
@@ -68,10 +68,8 @@ public class BookServiceImplementation implements BookService {
 
 
     private Sort.Direction getDirection(String sortDirection) {
-        if (sortDirection == null || ASC.equals(sortDirection))
-            return Sort.Direction.ASC;
-        else
-            return Sort.Direction.DESC;
+        return (sortDirection == null || ASC.equals(sortDirection)) ?
+                Sort.Direction.ASC : Sort.Direction.DESC;
     }
 
     private List<Integer> handleGenres(List<Integer> genres) {

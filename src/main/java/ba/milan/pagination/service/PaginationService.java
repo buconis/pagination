@@ -9,5 +9,4 @@ import java.util.List;
  */
 public interface PaginationService {
     List<Book> getPaginatedListOfBooks();
-
 }
