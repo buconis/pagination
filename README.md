@@ -1,7 +1,7 @@
 # Guide how to setup Spring Data pagination
 
 
-All you have to do is clone this repo, import library.sql scrypt from src folder and run gradle bootRun task runner.
+All you have to do is clone this repo, import library.sql scrypt from src folder and run gradle bootRun task.
 
 
 Example request simple pagination:
